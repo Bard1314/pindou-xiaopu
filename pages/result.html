@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    <title>图纸预览 · 拼豆小铺</title>
+    <style id="theme-vars">
+/* ============================================================
+   拼豆图稿生成器 — Brand Tokens (治愈系手作风)
+   Brand prefix: pb  |  Free-explore single-brand system
+   ============================================================ */
+
+:root {
+  /* ---- Brand primary hue: 陶土橘 (single brand hue + tints) ---- */
+  --pb-primary-50:  #FDF1EC;
+  --pb-primary-100: #FAE3DA;
+  --pb-primary-200: #F5CDBE;
+  --pb-primary-300: #EFB29D;
+  --pb-primary-400: #E8927C;
+  --pb-primary-500: #D97757;
+  --pb-primary-600: #C15F3F;
+  --pb-primary-700: #B4532F;
+  --pb-primary-800: #8F4524;
+  --pb-primary-900: #6E341C;
+
+  /* ---- Neutral scale (cream / 卡其棕) ---- */
+  --pb-neutral-50:  #FFFBF5;
+  --pb-neutral-100: #FBF3E9;
+  --pb-neutral-200: #F3E7D8;
+  --pb-neutral-300: #E5D5C1;
+  --pb-neutral-400: #CBB49B;
+  --pb-neutral-500: #A98C6F;
+  --pb-neutral-600: #8C6A4F;
+  --pb-neutral-700: #6E5340;
+  --pb-neutral-800: #543F30;
+  --pb-neutral-900: #3A2C21;
+
+  /* ---- Semantic surface & text ---- */
+  --pb-background:      #FFF8F0;
+  --pb-foreground:      #3A2C21;
+  --pb-card:            #FFFDF8;
+  --pb-card-foreground: #3A2C21;
+  --pb-popover:         #FFFDF8;
+  --pb-popover-foreground: #3A2C21;
+  --pb-surface:         #FFFDF8;
+  --pb-surface-2:       #F8EEE2;
+  --pb-muted:           #F8EEE2;
+  --pb-muted-foreground:#8C6A4F;
+  --pb-primary:         #B4532F;
+  --pb-primary-foreground: #FFFFFF;
+  --pb-border:          #EDE0D2;
+  --pb-input:           #E5D5C1;
+  --pb-ring:            #D97757;
+
+  /* ---- State colors (semantic status only) ---- */
+  --state-success: #5B8C5A;
+  --state-warning: #D9A441;
+  --state-error:   #C05A48;
+  --state-info:    #5E86A6;
+
+  /* ---- Typography (Apple-first: SF Pro + PingFang SC, falls back to Nunito/Noto) ---- */
+  --font-display: "Ma Shan Zheng", "ZCOOL KuaiLe", "Kaiti SC", "STKaiti", "KaiTi", cursive;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Nunito", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, "Consolas", monospace;
+
+  /* ---- Radius (restrained scale, cards <= 16px) ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --pb-radius-small: 4px;
+  --pb-radius-medium: 8px;
+  --pb-radius-large: 16px;
+
+  /* ---- Shadow (static alpha <= 0.05; floating layers may deepen) ---- */
+  --shadow-1: 0 1px 2px rgba(138, 106, 79, 0.05), 0 1px 1px rgba(138, 106, 79, 0.04);
+  --shadow-2: 0 8px 24px -8px rgba(138, 106, 79, 0.18);
+  --shadow-3: 0 24px 60px -20px rgba(58, 44, 33, 0.30);
+
+  /* ---- Spacing (8pt grid) ---- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 80px;
+}
+
+/* ---- Dark mode (dual-mode variables) ---- */
+html.dark {
+  --pb-background:        #241D16;
+  --pb-foreground:        #F5E9DA;
+  --pb-card:              #2E251C;
+  --pb-card-foreground:   #F5E9DA;
+  --pb-popover:           #2E251C;
+  --pb-popover-foreground:#F5E9DA;
+  --pb-surface:           #2E251C;
+  --pb-surface-2:         #3A2E22;
+  --pb-muted:             #3A2E22;
+  --pb-muted-foreground:  #CBB49B;
+  --pb-primary:           #EFB29D;
+  --pb-primary-foreground:#3A2C21;
+  --pb-border:            #4A3A2C;
+  --pb-input:             #4A3A2C;
+  --pb-ring:              #EFB29D;
+  --state-success: #8FBF8E;
+  --state-warning: #E3B75C;
+  --state-error:   #E08B77;
+  --state-info:    #8FB4D6;
+}
+
+/* ---- Base ---- */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  background: var(--pb-background);
+  color: var(--pb-foreground);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ---- Typography utilities ---- */
+.font-display { font-family: var(--font-display); }
+.font-sans    { font-family: var(--font-sans); }
+.font-mono    { font-family: var(--font-mono); }
+
+.t-display { font-family: var(--font-display); font-size: clamp(34px, 5vw, 56px); line-height: 1.15; font-weight: 400; letter-spacing: 0.01em; text-wrap: balance; word-break: keep-all; overflow-wrap: break-word; }
+.t-h1 { font-size: clamp(26px, 3vw, 34px); line-height: 1.25; font-weight: 700; text-wrap: balance; word-break: keep-all; }
+.t-h2 { font-size: clamp(20px, 2.2vw, 26px); line-height: 1.3; font-weight: 700; text-wrap: balance; word-break: keep-all; }
+.t-h3 { font-size: 18px; line-height: 1.35; font-weight: 700; }
+.t-body { font-size: 15px; line-height: 1.7; }
+.t-caption { font-size: 13px; line-height: 1.5; color: var(--pb-muted-foreground); }
+.t-num { font-variant-numeric: tabular-nums; }
+
+/* ---- Surface helpers ---- */
+.surface-card {
+  background: var(--pb-card);
+  border: 1px solid var(--pb-border);
+  border-radius: var(--radius-lg);
+}
+.surface-panel {
+  background: var(--pb-surface);
+  border: 1px solid var(--pb-border);
+  border-radius: var(--radius-lg);
+}
+.surface-soft {
+  background: var(--pb-muted);
+  border-radius: var(--radius-md);
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  font-family: var(--font-sans); font-size: 15px; font-weight: 700;
+  border-radius: var(--radius-md); border: none; cursor: pointer;
+  padding: 10px 20px; line-height: 1.2; text-decoration: none;
+  transition: background-color 140ms cubic-bezier(.2,.8,.2,1), transform 140ms cubic-bezier(.2,.8,.2,1), border-color 140ms cubic-bezier(.2,.8,.2,1);
+}
+.btn:focus-visible { outline: 2px solid var(--pb-ring); outline-offset: 2px; }
+.btn:active { transform: translateY(0) scale(.99); }
+.btn-primary { background: var(--pb-primary); color: var(--pb-primary-foreground); }
+.btn-primary:hover { background: var(--pb-primary-600); transform: translateY(-1px); }
+.btn-secondary { background: transparent; color: var(--pb-foreground); border: 1px solid var(--pb-border); }
+.btn-secondary:hover { background: var(--pb-muted); border-color: var(--pb-input); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--pb-muted-foreground); }
+.btn-ghost:hover { background: var(--pb-muted); color: var(--pb-foreground); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* ---- Inputs ---- */
+.input, .select {
+  width: 100%; height: 44px; padding: 0 12px;
+  font-family: var(--font-sans); font-size: 15px; color: var(--pb-foreground);
+  background: var(--pb-card); border: 1px solid var(--pb-input);
+  border-radius: var(--radius-md);
+  transition: border-color 140ms cubic-bezier(.2,.8,.2,1), box-shadow 140ms cubic-bezier(.2,.8,.2,1);
+}
+.input:focus, .select:focus { outline: none; border-color: var(--pb-ring); box-shadow: 0 0 0 2px var(--pb-ring); }
+.input::placeholder { color: var(--pb-muted-foreground); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--pb-background);
+    --color-foreground: var(--pb-foreground);
+    --color-card: var(--pb-card);
+    --color-card-foreground: var(--pb-card-foreground);
+    --color-popover: var(--pb-popover);
+    --color-popover-foreground: var(--pb-popover-foreground);
+    --color-primary: var(--pb-primary);
+    --color-primary-foreground: var(--pb-primary-foreground);
+    --color-muted: var(--pb-muted);
+    --color-muted-foreground: var(--pb-muted-foreground);
+    --color-border: var(--pb-border);
+    --color-input: var(--pb-input);
+    --color-ring: var(--pb-ring);
+    --radius-sm: var(--pb-radius-small);
+    --radius-md: var(--pb-radius-medium);
+    --radius-lg: var(--pb-radius-large);
+  }
+  @layer base {
+    body { background: var(--pb-background); color: var(--pb-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--pb-background); }
+      .text-background { color: var(--pb-background); }
+      .border-background { border-color: var(--pb-background); }
+      .ring-background { --tw-ring-color: var(--pb-background); }
+      .bg-foreground { background-color: var(--pb-foreground); }
+      .text-foreground { color: var(--pb-foreground); }
+      .border-foreground { border-color: var(--pb-foreground); }
+      .ring-foreground { --tw-ring-color: var(--pb-foreground); }
+      .bg-card { background-color: var(--pb-card); }
+      .text-card { color: var(--pb-card); }
+      .border-card { border-color: var(--pb-card); }
+      .ring-card { --tw-ring-color: var(--pb-card); }
+      .bg-card-foreground { background-color: var(--pb-card-foreground); }
+      .text-card-foreground { color: var(--pb-card-foreground); }
+      .border-card-foreground { border-color: var(--pb-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--pb-card-foreground); }
+      .bg-popover { background-color: var(--pb-popover); }
+      .text-popover { color: var(--pb-popover); }
+      .border-popover { border-color: var(--pb-popover); }
+      .ring-popover { --tw-ring-color: var(--pb-popover); }
+      .bg-popover-foreground { background-color: var(--pb-popover-foreground); }
+      .text-popover-foreground { color: var(--pb-popover-foreground); }
+      .border-popover-foreground { border-color: var(--pb-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--pb-popover-foreground); }
+      .bg-primary { background-color: var(--pb-primary); }
+      .text-primary { color: var(--pb-primary); }
+      .border-primary { border-color: var(--pb-primary); }
+      .ring-primary { --tw-ring-color: var(--pb-primary); }
+      .bg-primary-foreground { background-color: var(--pb-primary-foreground); }
+      .text-primary-foreground { color: var(--pb-primary-foreground); }
+      .border-primary-foreground { border-color: var(--pb-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--pb-primary-foreground); }
+      .bg-muted { background-color: var(--pb-muted); }
+      .text-muted { color: var(--pb-muted); }
+      .border-muted { border-color: var(--pb-muted); }
+      .ring-muted { --tw-ring-color: var(--pb-muted); }
+      .bg-muted-foreground { background-color: var(--pb-muted-foreground); }
+      .text-muted-foreground { color: var(--pb-muted-foreground); }
+      .border-muted-foreground { border-color: var(--pb-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--pb-muted-foreground); }
+      .bg-border { background-color: var(--pb-border); }
+      .text-border { color: var(--pb-border); }
+      .border-border { border-color: var(--pb-border); }
+      .ring-border { --tw-ring-color: var(--pb-border); }
+      .bg-input { background-color: var(--pb-input); }
+      .text-input { color: var(--pb-input); }
+      .border-input { border-color: var(--pb-input); }
+      .ring-input { --tw-ring-color: var(--pb-input); }
+      .bg-ring { background-color: var(--pb-ring); }
+      .text-ring { color: var(--pb-ring); }
+      .border-ring { border-color: var(--pb-ring); }
+      .ring-ring { --tw-ring-color: var(--pb-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body data-page-state="ready" class="min-h-screen font-sans antialiased">
+  <div class="progress-slim" id="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-topbar">
+    <div class="topbar-inner">
+      <a class="brand-logo" href="index.html" aria-label="拼豆小铺首页">
+        <span class="brand-dot" aria-hidden="true"></span>
+        拼豆小铺
+      </a>
+      <nav class="step-indicator" aria-label="使用步骤">
+        <span class="step-chip" id="step-upload">1 上传图片</span>
+        <span class="step-arrow" aria-hidden="true">→</span>
+        <span class="step-chip active" id="step-params">2 调整参数</span>
+        <span class="step-arrow" aria-hidden="true">→</span>
+        <span class="step-chip" id="step-export">3 导出图纸</span>
+      </nav>
+      <a class="btn btn-ghost" href="index.html">重新开始</a>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <!-- 空态引导（初始态，结果态隐藏） -->
+    <section id="idle-view" class="idle-layout hidden" aria-labelledby="idle-title">
+      <h1 class="t-display" id="idle-title" style="text-align:center">图片变拼豆图纸</h1>
+      <p class="t-body" style="text-align:center;color:var(--pb-muted-foreground);margin-top:10px">
+        上传任意图片，自动像素化并映射到 MARD 马德色卡，附色号与用量统计，一键导出 PDF 图纸。
+      </p>
+
+      <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="上传图片">
+        <span class="dropzone-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </span>
+        <p class="t-h3" style="margin:0 0 6px">拖拽图片到此处，或点击选择</p>
+        <p class="t-caption" style="margin:0">支持 JPG / PNG / WebP / GIF / BMP · 图片仅在本地处理，不会上传</p>
+        <input type="file" id="file-input" accept="image/*" class="hidden" aria-hidden="true" tabindex="-1">
+      </div>
+
+      <div class="sample-row" data-dom-id="demo-generate">
+        <span class="t-caption">没有图片？先用示例试试：</span>
+        <button type="button" class="sample-card" data-sample="sample-strawberry.svg" data-href="result.html?sample=sample-strawberry.svg">
+          <img src="../assets/sample-strawberry.svg" alt="草莓示例图缩略图"> 像素草莓
+        </button>
+        <button type="button" class="sample-card" data-sample="sample-panda.svg" data-href="result.html?sample=sample-panda.svg">
+          <img src="../assets/sample-panda.svg" alt="熊猫示例图缩略图"> 像素熊猫
+        </button>
+      </div>
+
+      <div class="steps">
+        <article class="step-card">
+          <span class="step-num">1</span>
+          <h3>上传图片</h3>
+          <p>拖入照片、插画或表情包，自动按宽高比适配网格。</p>
+        </article>
+        <article class="step-card">
+          <span class="step-num">2</span>
+          <h3>调整参数</h3>
+          <p>选择色板、网格尺寸与颜色数，图纸与用量实时刷新。</p>
+        </article>
+        <article class="step-card">
+          <span class="step-num">3</span>
+          <h3>导出图纸</h3>
+          <p>导出带色号与用量的 A4 PDF 图纸，照着拼就对了。</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 工作区 -->
+    <section id="workspace-view" aria-label="拼豆工具工作区">
+      <div class="app-grid">
+        <aside class="panel" aria-label="参数面板">
+          <div class="panel-title"><span class="dot" aria-hidden="true"></span>参数设置</div>
+
+          <div class="field">
+            <label for="param-palette">色板</label>
+            <select id="param-palette" class="select">
+              <option value="mard30" selected>MARD 30色</option>
+              <option value="mard72">MARD 72色</option>
+              <option value="all">MARD 全 291 色</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>网格宽度</label>
+            <div class="seg seg-3" id="param-preset" role="group" aria-label="网格宽度预设">
+              <button type="button" data-value="29" class="active">29 格</button>
+              <button type="button" data-value="44">44 格</button>
+              <button type="button" data-value="custom">自定义</button>
+            </div>
+            <input type="number" id="param-width" class="input" min="8" max="200" value="29" aria-label="自定义宽度格数" style="margin-top:8px">
+          </div>
+
+          <div class="field">
+            <label for="param-colors">颜色数（K-means 预量化）</label>
+            <select id="param-colors" class="select">
+              <option value="0" selected>不限（直接匹配色卡）</option>
+              <option value="8">8 色</option>
+              <option value="12">12 色</option>
+              <option value="16">16 色</option>
+              <option value="24">24 色</option>
+              <option value="32">32 色</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>匹配算法</label>
+            <div class="seg seg-2" id="param-ciede" role="group" aria-label="匹配算法">
+              <button type="button" data-value="true" class="active">CIEDE2000</button>
+              <button type="button" data-value="false">快速 Lab</button>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:4px">
+            <div class="switch-row">
+              <span>抖动（Floyd-Steinberg）</span>
+              <button type="button" class="switch" id="param-dither" role="switch" aria-checked="false" aria-label="抖动开关"></button>
+            </div>
+            <div class="switch-row">
+              <span>背景移除</span>
+              <button type="button" class="switch" id="param-bg" role="switch" aria-checked="false" aria-label="背景移除开关"></button>
+            </div>
+            <div class="switch-row">
+              <span>网格线</span>
+              <button type="button" class="switch" id="param-grid" role="switch" aria-checked="true" aria-label="网格线开关"></button>
+            </div>
+            <div class="switch-row">
+              <span>色号标注</span>
+              <button type="button" class="switch" id="param-labels" role="switch" aria-checked="false" aria-label="色号标注开关"></button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>亮度 <span class="range-val" id="val-brightness">0.0</span></label>
+            <input type="range" id="param-brightness" min="-0.5" max="0.5" step="0.05" value="0" data-live="1" aria-label="亮度">
+          </div>
+          <div class="field">
+            <label>对比度 <span class="range-val" id="val-contrast">0.0</span></label>
+            <input type="range" id="param-contrast" min="-0.5" max="0.5" step="0.05" value="0" data-live="1" aria-label="对比度">
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label>饱和度 <span class="range-val" id="val-saturation">0.0</span></label>
+            <input type="range" id="param-saturation" min="-0.5" max="0.5" step="0.05" value="0" data-live="1" aria-label="饱和度">
+          </div>
+        </aside>
+
+        <section class="panel pattern-panel" aria-label="图纸预览">
+          <div class="pattern-toolbar">
+            <span class="pattern-meta" id="pattern-meta">生成中…</span>
+            <span style="display:flex;gap:8px;align-items:center">
+              <img id="source-thumb" class="source-thumb hidden" alt="原图缩略图">
+              <button type="button" class="btn btn-ghost" id="btn-undo">撤销</button>
+            </span>
+          </div>
+          <div class="pattern-holder" id="pattern-holder">
+            <canvas id="preview-canvas" aria-label="拼豆图纸预览画布"></canvas>
+          </div>
+          <div class="field" style="margin-top:12px">
+            <label>画笔填色（点选色块后点击图纸格）</label>
+            <div class="pick-grid" id="palette-pick" aria-label="画笔色板"></div>
+          </div>
+          <div class="action-bar">
+            <div class="action-group">
+              <button type="button" class="btn btn-primary" id="btn-export-pdf" data-dom-id="btn-export-pdf">导出 PDF 图纸</button>
+              <button type="button" class="btn btn-secondary" id="btn-export-png">导出 PNG</button>
+              <button type="button" class="btn btn-secondary" id="btn-export-csv">导出 CSV</button>
+            </div>
+            <button type="button" class="btn btn-ghost" id="btn-reset" data-dom-id="btn-reset">重置</button>
+          </div>
+        </section>
+
+        <aside class="panel" aria-label="色号用量统计">
+          <div class="panel-title"><span class="dot" aria-hidden="true"></span>色号用量</div>
+          <div id="stats-panel">
+            <p class="t-caption" style="margin:0">生成图稿后，这里会显示每个色号的用量统计。</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>拼豆小铺 · 拼豆图稿生成器</strong><br>
+        纯本地处理，图片不会上传到任何服务器。
+      </div>
+      <div>
+        色卡数据来源：Zippland/perler-beads 社区整理（MARD 马德色号），非官方。<br>
+        颜色为数字近似值，请以实物色号贴纸为准。
+      </div>
+    </div>
+  </footer>
+
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/palette.js"></script>
+  <script src="../js/color.js"></script>
+  <script src="../js/processor.js"></script>
+  <script src="../js/stats.js"></script>
+  <script src="../js/render.js"></script>
+  <script src="../js/pdf.js"></script>
+  <script src="../lib/jspdf.umd.min.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>
